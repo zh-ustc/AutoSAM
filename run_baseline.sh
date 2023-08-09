@@ -1,0 +1,16 @@
+python main_baseline.py \
+--data_path seq_yelp.csv \
+--max_len 100 \
+--save_path save/ \
+--lr 1e-3 \
+--train_batch_size 128 \
+--test_batch_size 256 \
+--attn_heads 4 \
+--dropout 0.1 \
+--d_ffn 256 \
+--d_model 128 \
+--bert_layers 2 \
+--enable_res_parameter 1 \
+--device cuda:0 \
+--num_epoch 20 \
+--seed 0
