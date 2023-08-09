@@ -171,7 +171,7 @@ def main(args):
 
             with torch.no_grad():
                 
-                ''' Reward Item '''
+                ''' Reward Pre '''
                     # keep n + 1 step
                 out = model(seq,label,negs,position=None)
                 out = out.softmax(dim=-1)
@@ -201,7 +201,7 @@ def main(args):
                 R_item= torch.cumsum(R_item.flip(-1),dim=1).flip(-1) / gamma
                 R_item[seq==0] = 0
 
-                # ------------ extra ----------
+                ''' Reward PP '''
 
 
 
@@ -226,10 +226,7 @@ def main(args):
             
             with torch.no_grad():
                 total += loss.cpu().item()
-                total_ritem += (R_item.sum()/(seq>0).sum()).cpu().item()
-                total_rtarget += (R_target.sum()/(seq>0).sum()).cpu().item()
-                total_dp += (action.sum()/(seq>0).sum()).cpu().item()
-                pbar.set_postfix({'L':total/(idx+1),'R_item':total_ritem/(idx+1),'R_target':total_rtarget/(idx+1),'dp':total_dp/(idx+1),'E':epoch,'max':p.max().cpu().item(),'min':p[p>0].min().cpu().item()})
+                pbar.set_postfix({'L':total/(idx+1)})
                     
           
 
@@ -239,8 +236,8 @@ def main(args):
                 sampler.eval()
                 with torch.no_grad():
                     
-                    m = eval(test_loader,model,sampler,[20,10],args.num_item,args.device,tau) 
-                    print(epoch,m)
+                    m = eval(eval_loader,model,sampler,[20,10],args.num_item,args.device,tau) 
+                    print('validation',epoch,m)
                     f = open(args.save_path + 'result.txt','a+')
                     print(epoch,m,file = f)
                     if m['NDCG@10'] > best:
@@ -259,7 +256,7 @@ def main(args):
                 model.train()
                 sampler.train()
         f = open(args.save_path + 'loss.txt','a+')
-        print('epoch',epoch,'loss',total/(idx+1),'dp',total_dp/(idx+1),file=f)
+        print('epoch',epoch,'loss',total/(idx+1),file=f)
         f.close()
 
 if __name__ == '__main__':
