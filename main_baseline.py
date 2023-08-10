@@ -13,6 +13,7 @@ import numpy as np
 
 
 
+
 def neg_sample(seq, labels, num_item,sample_size):
     negs = set()
     seen = set(labels)
@@ -135,11 +136,13 @@ def main(args):
     baserate = args.baserate
 
     for epoch in range(args.num_epoch):
+         
         model.train()
        
         total = total_ritem = total_rtarget = total_dp =  0
         pbar = tqdm(train_loader)
         for idx,(seq,label) in (enumerate(pbar)):
+            
             tau = args.t
             step += 1
             seq = seq.to(args.device)
@@ -170,7 +173,6 @@ def main(args):
                 model.eval()
 
                 with torch.no_grad():
-                    
                     m = eval(eval_loader,model,[20,10],args.num_item,args.device) 
                     print('validation',epoch,m)
                     f = open(args.save_path + 'result.txt','a+')
@@ -183,7 +185,7 @@ def main(args):
                         stop = 0
                     else:
                         stop += 1
-                        if stop == 3: return
+                        if stop == 1: return
                     f.close()
                 model.train()
 
