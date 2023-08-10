@@ -235,8 +235,9 @@ def main(args):
                 model.eval()
                 sampler.eval()
                 with torch.no_grad():
-                    
+           
                     m = eval(eval_loader,model,sampler,[20,10],args.num_item,args.device,tau) 
+             
                     print('validation',epoch,m)
                     f = open(args.save_path + 'result.txt','a+')
                     print(epoch,m,file = f)
@@ -251,7 +252,7 @@ def main(args):
                         stop = 0
                     else:
                         stop += 1
-                        if stop == 3: return
+                        if stop == 1: return
                     f.close()
                 model.train()
                 sampler.train()
