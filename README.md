@@ -2,7 +2,6 @@
 
 ## Project Overview
 
-
 This is an anonymously open-sourced project designed for scientific research and technological development, supporting the blind review process to ensure fairness and objectivity in evaluations. 
 
 ## Dataset
