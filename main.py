@@ -165,7 +165,7 @@ def main(args):
             labelrl_train = torch.zeros(labelrl.shape,device=device,dtype=torch.int64)
             labelrl_train[action] = labelrl[seqrl>0]
 
-            len_ = (seqrl.sum(dim=1) == 0).sum()
+            len_ = (seqrl.sum(dim=0) == 0).sum()
             out_new = model(seqrl[:,len_:],labelrl[:,len_:],negs,position = position[:,len_:])
             loss = CE(out_new,torch.LongTensor([0]*out_new.size(0)).to(args.device))
 
