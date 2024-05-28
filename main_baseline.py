@@ -153,7 +153,7 @@ def main(args):
             # prob
 
             position = torch.arange(args.max_len,device=device).unsqueeze(0).repeat(len(seq),1)    
-            len_ = (seq.sum(dim=1) == 0).sum()
+            len_ = (seq.sum(dim=0) == 0).sum()
             out = model(seq[:,len_:],label[:,len_:],negs,position = position[:,len_:])
             loss = CE(out,torch.LongTensor([0]*out.size(0)).to(args.device))
 
